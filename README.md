@@ -92,8 +92,9 @@ pick up if available.
         * [Dealing with Date and Time](#dealing-with-date-and-time)
         * [Looking Up Template Files](#looking-up-template-files)
     * [Configuration](#configuration)
-        * [Configuring attack protection](#configuring-attack-protection)
         * [Available Settings](#available-settings)
+    * [Security](#security)
+        * [Configuring attack protection](#configuring-attack-protection)
     * [Environments](#environments)
     * [Error Handling](#error-handling)
         * [Not Found](#not-found)
@@ -2091,39 +2092,6 @@ get '/' do
 end
 ```
 
-### Configuring attack protection
-
-Sinatra is using
-[Rack::Protection](https://github.com/sinatra/rack-protection#readme) to defend
-your application against common, opportunistic attacks. You can easily disable
-this behavior (which will open up your application to tons of common
-vulnerabilities):
-
-```ruby
-disable :protection
-```
-
-To skip a single defense layer, set `protection` to an options hash:
-
-```ruby
-set :protection, :except => :path_traversal
-```
-You can also hand in an array in order to disable a list of protections:
-
-```ruby
-set :protection, :except => [:path_traversal, :session_hijacking]
-```
-
-By default, Sinatra will only set up session based protection if `:sessions`
-have been enabled. See 'Using Sessions'. Sometimes you may want to set up
-sessions "outside" of the Sinatra app, such as in the config.ru or with a
-separate Rack::Builder instance. In that case you can still set up session
-based protection by passing the `:session` option:
-
-```ruby
-set :protection, :session => true
-```
-
 ### Available Settings
 
 <dl>
@@ -2307,6 +2275,43 @@ set :protection, :session => true
     Defaults to <tt>true</tt>.
   </dd>
 </dl>
+
+## Security
+
+Sinatra is using
+[Rack::Protection](https://github.com/sinatra/rack-protection#readme) to defend
+your application against common, opportunistic attacks. You can easily disable
+this behavior (which will open up your application to tons of common
+vulnerabilities):
+
+```ruby
+disable :protection
+```
+
+### Configuring attack protection
+
+To skip a single defense layer, set `protection` to an options hash:
+
+```ruby
+set :protection, :except => :path_traversal
+```
+You can also hand in an array in order to disable a list of protections:
+
+```ruby
+set :protection, :except => [:path_traversal, :session_hijacking]
+```
+
+By default, Sinatra will only set up session based protection if `:sessions`
+have been enabled. See 'Using Sessions'. Sometimes you may want to set up
+sessions "outside" of the Sinatra app, such as in the config.ru or with a
+separate Rack::Builder instance. In that case you can still set up session
+based protection by passing the `:session` option:
+
+```ruby
+set :protection, :session => true
+```
+
+Read [Rack::Protection](https://github.com/sinatra/rack-protection#readme) for a complete list of protections and detailed usage.
 
 ## Environments
 
